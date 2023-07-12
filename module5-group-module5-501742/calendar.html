@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Calendar</title>
+    <link rel="stylesheet" type="text/css" href="stylesheet.css">
+    <script src="calendarLibrary.js"></script>
+</head>
+<body>
+    <h1>Calendar</h1>
+    
+
+    <h2 class="month_name">""</h2>
+
+<!-- Container for buttons -->
+    <div id="top">
+        <button id="prev_month_btn" class="month_button">Prev</button>
+        <button id="next_month_btn" class="month_button">Next</button>
+    </div>
+
+    <!-- Day names -->
+    <div id="dayNames">
+        <div class="dayName">Sunday</div>
+        <div class="dayName">Monday</div>
+        <div class="dayName">Tuesday</div>
+        <div class="dayName">Wednesday</div>
+        <div class="dayName">Thursday</div>
+        <div class="dayName">Friday</div>
+        <div class="dayName">Saturday</div>
+    </div>
+
+    <!-- Container for Month -->
+    <div id="calendar">
+
+    </div>
+   <!-- Container for Login, SignUp, Create Event -->
+    <div id="container">
+        <!-- Login -->
+        <div id="login">
+            <h5> Please login here: </h5>
+                    Email:<input type="text" name="email" id="email_input"> <br>
+                    Password:<input type="password" name="password" id="password_input"> <br> <br>
+                    <input type="submit" id="login_btn" name="login1" value="Login"> <br><br>
+        </div>
+
+    <!-- Signup -->
+        <div id="signup">
+            <h5> Signup here:</h5>
+                Email:<input type="text" name="emailsignup" id="email_input_signup"> <br>
+                Password:<input type="password" name="passwordsignup" id="password_input_signup"> <br>
+                Confirm Password:<input type="password" name="passwordsignupconfirm" id="password_input_signup_confirm"> <br>
+                First name:<input type="text" name="firstname" id="firstname_input"> <br>
+                Last name:<input type="text" name="lastname" id="lastname_input"> <br>
+                <input type="submit" name="signup" value="Sign Up" id="signup_btn"> <br><br>
+        </div>
+
+    <!-- Create Event -->
+        <div id="create_event">
+            <h5> Create Event: </h5>
+                    Title:<input type="text" name="title" id="title_input"> <br>
+                    Date:<input type="date" name="date" id="date_input"> <br> <br>
+                    Time:<input type="time" name="time" id="time_input"> <br> <br>
+    
+                    <input type="submit" id="create_event_btn" name="create_event_btn" value="Create Event"> <br><br>
+        </div>
+    </div>
+
+    <div>
+        <input type="submit" id="logout_btn" value="Logout">
+    </div>
+
+    <script>
+        var currentMonth = new Month(2023, 2); // March 2023
+        
+        //Gets month name
+        function getMonthName() {
+            monthName = "";
+            switch(currentMonth.month) {
+                case 0:
+                    monthName = "January";
+                    break;
+                case 1:
+                    monthName = "February";
+                    break;
+                case 2:
+                    monthName = "March";
+                    break;
+                case 3:
+                    monthName = "April";
+                    break;
+                case 4:
+                    monthName = "May";
+                    break;
+                case 5:
+                    monthName = "June";
+                    break;
+                case 6:
+                    monthName = "July";
+                    break;
+                case 7:
+                    monthName = "August";
+                    break;
+                case 8:
+                    monthName = "September";
+                    break;
+                case 9:
+                    monthName = "October";
+                    break;
+                case 10:
+                    monthName = "November";
+                    break;
+                case 11:
+                    monthName = "December";
+                    break;
+            }
+            return monthName;
+        }
+
+        updateCalendar(); //Initial calendar update
+
+        // Change the month when the "next" button is pressed
+        document.getElementById("next_month_btn").addEventListener("click", function(event){
+            document.getElementById("calendar").innerHTML = "";
+
+            currentMonth = currentMonth.nextMonth(); // Previous month would be currentMonth.prevMonth()
+            updateCalendar(); // Whenever the month is updated, we'll need to re-render the calendar in HTML
+        }, false);
+
+        //Change the month when the "previous" button is pressed
+        document.getElementById("prev_month_btn").addEventListener("click", function(event) {
+            document.getElementById("calendar").innerHTML = "";
+
+            currentMonth = currentMonth.prevMonth();
+            updateCalendar();
+        }, false);
+
+        function getEvents() {
+
+        }
+        // Updates dates & events
+        function updateCalendar(){
+
+            const weeks = currentMonth.getWeeks();
+
+            //Adds weeks to calendar
+            for(let w in weeks){
+                let days = weeks[w].getDates();
+                // days contains normal JavaScript Date objects.
+                // alert("Week starting on "+days[0]);
+                // alert(w);
+                const newWeek = document.createElement("div");
+                newWeek.setAttribute("class", "week");
+                document.getElementById("calendar").appendChild(newWeek);
+                
+                //Adds days to week
+                for(let d in days){
+                    
+                    console.log(days[d].toISOString());
+                    const newDay = document.createElement("div");
+                    newDay.setAttribute("class", "day");
+                    const dateText = document.createTextNode(days[d].getDate());
+                    document.getElementById("calendar").getElementsByClassName("week")[w].appendChild(newDay);
+                    newDay.appendChild(dateText);
+                    newDay.addEventListener("click", function() {
+                        newEvent(newDay);
+                    },false);
+
+                }
+            }
+            document.getElementsByClassName("month_name")[0].textContent = getMonthName() + " " + currentMonth.year;
+        }
+        // Creates new event upon click of square
+        function newEvent(date){
+            const event = document.createElement("div");
+            event.setAttribute("class", "event");
+            event.textContent = "event";
+            date.appendChild(event);
+            event.addEventListener("click", function() {
+                date.removeChild(event);
+
+            }, false);
+        }
+        //comment
+        //Event with date, time, title attributes
+        function Event(date, time, title) {
+	        "use strict";
+	
+	        this.date = date;
+            this.time = time;
+	        this.title = title;
+        }
+
+        //Logs user out
+        function logout() {
+            alert("logged out")
+        }
+        //Processes login by fetching from login_ajax.php
+        function loginAjax() {
+            const email = document.getElementById("email_input").value; // Get the username from the form
+            const password = document.getElementById("password_input").value; // Get the password from the form
+            
+            // Make a URL-encoded string for passing POST data:
+            let data = { 'email': email, 'password': password, };
+            fetch('login_ajax.php', {
+                    method: 'POST',
+                    body: JSON.stringify(data),
+                    headers: { 'content-type': 'application/json' }
+            })
+            .then(response => response.json())
+            // .then(data => console.log(data.success ? "You've been logged in!" : `You were not logged in ${data.message}`))
+            
+            .then(data => {
+                        data = JSON.parse(JSON.stringify(data))
+                        alert(data.status)
+                    })
+            .catch(err => console.error(err));
+      
+        }
+
+        //Handles sign up
+        function signUpAjax() {
+
+            const email = document.getElementById("email_input_signup").value; // Get the username from the form
+            const password = document.getElementById("password_input_signup").value; // Get the password from the form
+            const confirmPass = document.getElementById("password_input_signup_confirm").value;
+            const firstName = document.getElementById("firstname_input").value;
+            const lastName = document.getElementById("lastname_input").value;
+            
+            //Alerts passwords don't match if they do not
+            if(password != confirmPass) {
+                alert("Passwords do not match");
+            }
+
+            else {
+                 // Make a URL-encoded string for passing POST data:
+                let data = { 'email': email, 'password': password, 'firstname' : firstName, 'lastname' : lastName};
+                fetch('signup_ajax.php', {
+                        method: 'POST',
+                        body: JSON.stringify(data),
+                        headers: { 'content-type': 'application/json' }
+                })
+                .then(response => response.json())   
+
+                .then(data => {
+                        data = JSON.parse(JSON.stringify(data))
+                        alert(data.status)
+                })
+                .catch(err => console.error(err));
+            }
+
+        }
+
+        
+        
+        //Processes create event by fetching 'create_event_ajax.php'
+        function createEventAjax(){
+            const user_id = 1;
+            const event_title = document.getElementById("title_input").value; // Get the username from the form
+            const event_date = document.getElementById("date_input").value; // Get the password from the form
+            const event_time = document.getElementById("time_input").value; // Get the password from the form
+
+
+            let data = {'user_id' : user_id, 'title' : event_title, 'date' : event_date, 'time' : event_time};
+
+            fetch('create_event_ajax.php', {
+                    method: 'POST',
+                    body: JSON.stringify(data),
+                    headers: { 'content-type': 'application/json' }
+            })
+            .then(response => response.json())
+            
+            .then(data => {
+                        data = JSON.parse(JSON.stringify(data))
+                        alert(data.status)
+                        alert(data.user_id)
+                    })
+            .catch(err => console.error(err));
+        }
+
+        ////////EVENT LISTENERS FOR BUTTONS/////////
+        document.getElementById("login_btn").addEventListener("click", function () {
+            loginAjax()
+        }, false);
+
+        document.getElementById("signup_btn").addEventListener("click", function() {
+            signUpAjax()
+        }, false);
+
+        document.getElementById("create_event_btn").addEventListener("click", function () {
+            createEventAjax()
+        }, false);
+
+
+        document.getElementById("logout_btn").addEventListener("click", function () {
+            logout()
+        }, false);
+
+
+    </script>
+
+</body>
+</html>

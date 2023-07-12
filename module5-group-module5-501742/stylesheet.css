@@ -1,0 +1,125 @@
+h1{
+    font-family: Verdana, Geneva, sans-serif;
+    font-size: 60px;
+    color: #000000;
+    text-align: center;
+}
+
+h2{
+    text-align: center;
+    color:slategray;
+}
+
+#top {
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    align-items: center;
+    width: 10%;
+}
+
+.month_button {
+    background-color:tomato; /* Green */
+    border: none;
+    color: white;
+    padding: 5px 10px;
+    text-align: center;
+    display: inline-block;
+    font-size: 16px;
+    margin: 0 auto;
+
+}
+
+
+#calendar {
+    display: grid;
+    justify-content: center;
+}
+
+#signupform{
+    display: inline-block;
+}
+
+#create_event{
+    display: inline-block;
+}
+#container{
+    margin: 0 auto;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    width: 50%;
+    border: 3px solid tomato;
+    padding: 5 px;
+}
+
+#container div {
+    padding: 50px;
+    width: 100px;
+}
+/* .month{
+    display: flex;
+    align-items: center;
+    margin: 0 auto;
+    width: 90%;
+} */
+
+/* .week{
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    width: 90%;
+} */
+
+#dayNames{
+    margin: 0 auto;
+    align-items: center;
+    width: 90%;
+    display: flex;
+    
+    
+  }
+#dayNames div {
+    padding: 10px;
+    text-align: center;
+    width: 100px;
+
+}
+.dayName{
+    flex: 1;
+    font-size: 18px;
+}
+
+.day{
+    width: 175px;
+    height: 150px;
+    border: 1px solid black;
+    padding: 2px;
+    /* border-radius: 10px; */
+    text-align: center;
+    margin: 0 auto;
+    display:inline-block;
+    font-family: Verdana, Geneva, sans-serif;
+    font-size: 20px;
+    color:slategray;
+    text-align:center;
+}
+
+.event{
+    width: 168px;
+    height: 20px;
+    border: 1px solid red;
+    padding: 1px;
+    border-radius: 5px;
+    text-align: left;
+    font-size: 14px;
+}
+
+/* div{
+    width: 200px;
+    border: 1px solid black;
+    padding: 5px;
+    border-radius: 10px;
+    text-align: center;
+} */
+
